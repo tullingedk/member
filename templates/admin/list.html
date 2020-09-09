@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %} - Lista av medlemmar{% endblock %}
+{% block body %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Namn</th>
+      <th scope="col">Klass</th>
+      <th scope="col">E-post</th>
+      <th scope="col">Roller</th>
+      <th scope="col">Skapades</th>
+      <th scope="col">Modifierades</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for member in members %}
+    <tr>
+      <th scope="row">{{ member["id"] }}</th>
+      <td>{{ member["name"] }}</td>
+      <td>{{ member["school_class"] }}</td>
+      <td>{{ member["email"] }}</td>
+      <td>
+        <ul>
+            {% for role in member["roles"] %}
+            <li>{{ role }}</li>
+            {% endfor %}
+        </ul>
+      </td>
+      <td>{{ member["created"] }}</td>
+      <td>{{ member["modified"] }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

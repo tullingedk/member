@@ -8,8 +8,8 @@ jobs:
         install:
           - pip install flake8 black --upgrade
         script:
-          - black --check backend/
-          - flake8 backend
+          - black --check .
+          - flake8 .
   
       - stage: deploy
         name: Build and deploy Docker image
