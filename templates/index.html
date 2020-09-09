@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block body %}
+<h1>Välkommen!</h1>
+<p>Inloggad som {{ name }}, {{ email }}.</p>
+<img src="{{ picture_url }}" />
+<a href="/logout">
+  <button type="button" class="btn btn-primary">Logga ut</button>
+</a>
+{% endblock %}
