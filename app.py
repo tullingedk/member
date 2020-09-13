@@ -70,6 +70,24 @@ def admin_list():
     return render_template("admin/list.html", members=members)
 
 
+@app.route("/archived-list")
+@logged_in
+@member
+@admin
+def archived_list():
+    members = db.get_archived()
+
+    return render_template("admin/list.html", members=members, archived=True)
+
+
+@app.route("/archive/<id>")
+@logged_in
+@member
+@admin
+def archive(id):
+    return ""
+
+
 # register blueprints
 app.register_blueprint(auth_blueprint)
 

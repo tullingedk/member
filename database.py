@@ -39,6 +39,7 @@ class Database:
                 "email": email,
                 "created": str(datetime.now()),
                 "modified": str(datetime.now()),
+                "archived": None,
             }
         )
 
@@ -62,11 +63,11 @@ class Database:
         self._commit(f"Registered member {name}", email, name)
         self._push()
 
-    def get(self, email):
+    def get(self, email, archived=False):
         res = next(
             (
                 member
-                for member in self._read_entry()["members"]
+                for member in self._read_entry(archived=archived)["members"]
                 if member["email"] == email
             ),
             None,
@@ -75,16 +76,27 @@ class Database:
         if not res:
             raise Exception("Member does not exist")
 
-        with open(f"{CACHE_PATH}/members/{res['id']}.json") as f:
+        with open(
+            f"{CACHE_PATH}/{'archived' if archived else 'members'}/{res['id']}.json"
+        ) as f:
             member = load(f)
 
         member["created"] = res["created"]
         member["modified"] = res["modified"]
+        member["archived"] = res["archived"]
 
         return member
 
     def get_all(self):
         entries = self._read_entry()
+        members = [
+            {**member, **self.get(member["email"])} for member in entries["members"]
+        ]
+
+        return members
+
+    def get_archived(self):
+        entries = self._read_entry(archived=True)
         members = [
             {**member, **self.get(member["email"])} for member in entries["members"]
         ]
@@ -106,8 +118,8 @@ class Database:
 
         return True
 
-    def _read_entry(self):
-        with open(f"{CACHE_PATH}/members.json") as f:
+    def _read_entry(self, archived=False):
+        with open(f"{CACHE_PATH}/{'archived' if archived else 'members'}.json") as f:
             members = load(f)
 
         return members

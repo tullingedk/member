@@ -1,6 +1,20 @@
 {% extends 'base.html' %}
 {% block title %} - Lista av medlemmar{% endblock %}
 {% block body %}
+<a href="/">
+  <button type="button" class="btn btn-primary">Tillbaka</button>
+</a>
+
+{% if archived %}
+<a href="/list">
+  <button type="button" class="btn btn-primary">Visa aktiva medlemmar</button>
+</a>
+{% else %}
+<a href="/archived-list">
+  <button type="button" class="btn btn-primary">Visa arkiverade medlemmar</button>
+</a>
+{% endif %}
+
 <table class="table">
   <thead>
     <tr>
@@ -11,6 +25,8 @@
       <th scope="col">Roller</th>
       <th scope="col">Skapades</th>
       <th scope="col">Modifierades</th>
+      <th scope="col">Arkiverades</th>
+      <th scope="col">Åtgärd</th>
     </tr>
   </thead>
   <tbody>
@@ -29,6 +45,16 @@
       </td>
       <td>{{ member["created"] }}</td>
       <td>{{ member["modified"] }}</td>
+      <td>{{ member["archived"] }}</td>
+      <td>
+        {% if archived %}
+        Ingen åtgärd tillgänglig.
+        {% else %}
+        <a href="/archive/{{ member["id"] }}">
+          <button type="button" class="btn btn-primary">Arkivera</button>
+        </a>
+        {% endif %}
+      </td>
     </tr>
     {% endfor %}
   </tbody>
