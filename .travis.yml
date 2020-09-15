@@ -11,15 +11,15 @@ jobs:
           - black --check .
           - flake8 .
   
-      - stage: deploy
-        name: Build and deploy Docker image
-        script:
-          - docker build -t tullingedk/member:latest .
-        deploy:
-          provider: script
-          script: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin && docker push tullingedk/member:latest
-          edge: true
-          on:
-            branch: master
-        after_deploy:
-          - rm -rf /home/travis/.docker/config.json
+      # - stage: deploy
+      #   name: Build and deploy Docker image
+      #   script:
+      #     - docker build -t tullingedk/member:latest .
+      #   deploy:
+      #     provider: script
+      #     script: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin && docker push tullingedk/member:latest
+      #     edge: true
+      #     on:
+      #       branch: master
+      #   after_deploy:
+      #     - rm -rf /home/travis/.docker/config.json
