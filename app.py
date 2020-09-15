@@ -17,7 +17,7 @@ from decorators import logged_in, member, admin
 from models import db, Member
 
 app = Flask(__name__)
-app.secret_key = urandom(24)
+app.secret_key = environ.get("SECRET_KEY", urandom(24))
 
 MYSQL_USER = environ.get("MYSQL_USER", "member")
 MYSQL_PASSWORD = environ.get("MYSQL_PASSWORD", "password")
