@@ -11,7 +11,11 @@ flake8 = "*"
 flask = "*"
 requests = "*"
 oauthlib = "*"
-gitpython = "*"
+pymysql = "*"
+redis = "*"
+flask-sqlalchemy = "*"
+gunicorn = "*"
+cryptography = "*"
 
 [requires]
 python_version = "3.8"

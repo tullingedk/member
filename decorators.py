@@ -11,9 +11,7 @@
 from functools import wraps
 from flask import session, redirect
 
-from database import Database
-
-db = Database()
+from models import Member
 
 
 def logged_in(f):
@@ -29,7 +27,7 @@ def logged_in(f):
 def member(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if not db.verify(session["google_email"]):
+        if len(Member.query.filter_by(email=session["google_email"]).all()) < 1:
             return redirect("/")
         return f(*args, **kwargs)
 
@@ -39,9 +37,9 @@ def member(f):
 def admin(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        member = db.get(session["google_email"])
+        member = Member.query.filter_by(email=session["google_email"]).one()
 
-        if "styrelse" not in member["roles"]:
+        if not member.admin:
             return redirect("/")
         return f(*args, **kwargs)
 

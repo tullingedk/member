@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %} - Lista av medlemmar{% endblock %}
+{% block title %} - Lista av {% if archived %}arkiverade{% endif %} medlemmar{% endblock %}
 {% block body %}
 <a href="/">
   <button type="button" class="btn btn-primary">Tillbaka</button>
@@ -14,6 +14,9 @@
   <button type="button" class="btn btn-primary">Visa arkiverade medlemmar</button>
 </a>
 {% endif %}
+<button onclick="window.print();" type="button" class="btn btn-primary">Skriv ut</button>
+
+<p>Utskriftsdatum: {{ time }}</p>
 
 <table class="table">
   <thead>
@@ -22,38 +25,36 @@
       <th scope="col">Namn</th>
       <th scope="col">Klass</th>
       <th scope="col">E-post</th>
-      <th scope="col">Roller</th>
+      <th scope="col">Styrelse</th>
+      <th scope="col">Arkiverad</th>
+      <th scope="col">Arkiveringsdatum</th>
       <th scope="col">Skapades</th>
       <th scope="col">Modifierades</th>
-      <th scope="col">Arkiverades</th>
       <th scope="col">Åtgärd</th>
     </tr>
   </thead>
   <tbody>
     {% for member in members %}
     <tr>
-      <th scope="row">{{ member["id"] }}</th>
-      <td>{{ member["name"] }}</td>
-      <td>{{ member["school_class"] }}</td>
-      <td>{{ member["email"] }}</td>
+      <th scope="row">{{ member.id }}</th>
+      <td>{{ member.name }}</td>
+      <td>{{ member.school_class }}</td>
+      <td>{{ member.email }}</td>
+      <td>Styrelse? {{ member.admin }}</td>
+      <td>Arkiverad? {{ member.archived }}</td>
+      <td>{{ member.time_archived }}</td>
+      <td>{{ member.time_created }}</td>
+      <td>{{ member.time_updated }}</td>
       <td>
-        <ul>
-            {% for role in member["roles"] %}
-            <li>{{ role }}</li>
-            {% endfor %}
-        </ul>
-      </td>
-      <td>{{ member["created"] }}</td>
-      <td>{{ member["modified"] }}</td>
-      <td>{{ member["archived"] }}</td>
-      <td>
-        {% if archived %}
-        Ingen åtgärd tillgänglig.
-        {% else %}
-        <a href="/archive/{{ member["id"] }}">
-          <button type="button" class="btn btn-primary">Arkivera</button>
+        <a href="/archive/{{ member.id }}">
+          <button type="button" class="btn btn-primary">
+            {% if archived %}
+            Avarkivera
+            {% else %}
+            Arkivera
+            {% endif %}
+          </button>
         </a>
-        {% endif %}
       </td>
     </tr>
     {% endfor %}

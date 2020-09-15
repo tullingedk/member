@@ -9,27 +9,40 @@
 #############################################################################
 
 from flask import Flask, session, render_template, redirect, request, abort
-from os import urandom
+from os import urandom, environ
+from datetime import datetime
 
 from blueprints.auth import auth_blueprint
-from database import Database
 from decorators import logged_in, member, admin
+from models import db, Member
 
 app = Flask(__name__)
 app.secret_key = urandom(24)
 
-db = Database()
-db._pull()
+MYSQL_USER = environ.get("MYSQL_USER", "member")
+MYSQL_PASSWORD = environ.get("MYSQL_PASSWORD", "password")
+MYSQL_HOST = environ.get("MYSQL_HOST", "127.0.0.1")
+MYSQL_DATABASE = environ.get("MYSQL_DATABASE", "member")
+
+app.config[
+    "SQLALCHEMY_DATABASE_URI"
+] = f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}/{MYSQL_DATABASE}?charset=utf8mb4"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db.init_app(app)
+
+with app.app_context():
+    db.create_all()
 
 
 @app.route("/", methods=["POST", "GET"])
 @logged_in
 def index():
     if request.method == "GET":
-        member = None
+        member = Member.query.filter_by(email=session["google_email"]).all()
 
-        if db.verify(session["google_email"]):
-            member = db.get(session["google_email"])
+        if member:
+            member = member[0]
 
         return render_template(
             "index.html",
@@ -40,23 +53,31 @@ def index():
         )
 
     if request.method == "POST":
-        if db.verify(session["google_email"]):
+        if len(Member.query.filter_by(email=session["google_email"]).all()) > 0:
             abort(400, "You are already a member.")
-
-        print(request.form)
 
         school_class = request.form["school_class"].upper()
         stadgar = request.form["stadgar"]
 
-        print(school_class)
-        print(stadgar)
+        if not stadgar:
+            abort(400, "Stadgar must be accepted")
 
         if len(school_class) < 4 or len(school_class) > 5:
             abort(400, "Too long or too short school_class.")
 
-        db.create(
-            session["google_name"], school_class, session["google_email"], roles=[]
+        # Create new member object
+        member = Member(
+            name=session["google_name"],
+            email=session["google_email"],
+            school_class=school_class,
+            admin=False,
+            archived=False,
         )
+
+        # Add to database
+        db.session.add(member)
+        db.session.commit()
+
         return redirect("/")
 
 
@@ -65,9 +86,9 @@ def index():
 @member
 @admin
 def admin_list():
-    members = db.get_all()
+    members = Member.query.filter_by(archived=False).all()
 
-    return render_template("admin/list.html", members=members)
+    return render_template("admin/list.html", members=members, time=datetime.now())
 
 
 @app.route("/archived-list")
@@ -75,9 +96,11 @@ def admin_list():
 @member
 @admin
 def archived_list():
-    members = db.get_archived()
+    members = Member.query.filter_by(archived=True).all()
 
-    return render_template("admin/list.html", members=members, archived=True)
+    return render_template(
+        "admin/list.html", members=members, time=datetime.now(), archived=True
+    )
 
 
 @app.route("/archive/<id>")
@@ -85,7 +108,16 @@ def archived_list():
 @member
 @admin
 def archive(id):
-    return ""
+    member = Member.query.get(id)
+
+    member.time_archived = None if member.archived else datetime.now()
+    member.archived = False if member.archived else True
+
+    # Add to database
+    db.session.add(member)
+    db.session.commit()
+
+    return redirect("/list")
 
 
 # register blueprints

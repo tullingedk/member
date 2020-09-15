@@ -106,7 +106,7 @@ def callback():
                 401,
                 " ".join(
                     (
-                        f"Booking system only allows hosted domains for organization {GOOGLE_HOSTED_DOMAIN}.",
+                        f"Member system only allows hosted domains for organization {GOOGLE_HOSTED_DOMAIN}.",
                         f"Your organization, {hd}, is not allowed.",
                     )
                 ),

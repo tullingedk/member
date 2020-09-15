@@ -9,22 +9,16 @@
   <button type="button" class="btn btn-primary">Gå med i Discordservern</button>
 </a>
 
-{% if "styrelse" in member["roles"] %}
+{% if member.admin %}
 <a href="/list">
   <button type="button" class="btn btn-primary">Du som styrelsemedlem: visa och hantera medlemmar</button>
 </a>
 {% endif %}
 
-<p>{{ member["name"] }} klass {{ member["school_class"] }}</p>
-<p>Registrerades: {{ member["created"] }}</p>
-<p>Ändrades senast: {{ member["modified"] }}</p>
+<p>{{ member.name }} klass {{ member.school_class }}</p>
+<p>Registrerades: {{ member.time_created }}</p>
+<p>Ändrades senast: {{ member.time_updated }}</p>
 
-<p>Dina roller</p>
-<ul>
-{% for role in member["roles"] %}
-  <li>{{ role }}</li>
-{% endfor %}
-</ul>
 {% else %}
 <p>Bli medlem!</p>
 <p>Använd detta formulär för att bli medlem i Datorklubben. Ett medlemskap kostar ingenting men hjälper oss att söka bidrag och växa!</p>
