@@ -16,7 +16,6 @@ services:
       GOOGLE_HOSTED_DOMAIN: '${GOOGLE_HOSTED_DOMAIN}'
       SECRET_KEY: '${SECRET_KEY}'
     depends_on:
-      - mysql
       - redis
     ports:
       - 5000:5000
