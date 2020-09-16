@@ -33,6 +33,7 @@ member = Member(
     school_class=school_class,
     admin=admin,
     archived=False,
+    discord=discord,
     time_created=modified_date if modified_date is not None else None,
 )
 
