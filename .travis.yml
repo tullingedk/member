@@ -14,6 +14,7 @@ jobs:
       - stage: deploy
         name: Build and deploy Docker image
         script:
+          - sed -i "s/development/$TRAVIS_COMMIT/g" version.py
           - docker build -t tullingedk/member:latest .
         deploy:
           provider: script

@@ -15,6 +15,7 @@ from datetime import datetime
 from blueprints.auth import auth_blueprint
 from decorators import logged_in, member, admin
 from models import db, Member
+from version import commit_hash
 
 app = Flask(__name__)
 app.secret_key = environ.get("SECRET_KEY", urandom(24))
@@ -33,6 +34,11 @@ db.init_app(app)
 
 with app.app_context():
     db.create_all()
+
+
+@app.context_processor
+def inject_stage_and_region():
+    return dict(commit_hash=commit_hash)
 
 
 @app.route("/", methods=["POST", "GET"])
