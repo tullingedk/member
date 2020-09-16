@@ -21,6 +21,9 @@ name = input("Enter name: ")
 email = input("Enter email: ")
 school_class = input("Enter school class: ")
 admin = True if input("Admin? (y/N): ").lower() == "y" else False
+discord = (
+    True if input("Has been given role on Discord? (y/N): ").lower() == "y" else False
+)
 modified_date = input("Enter modified creation date (empty if no): ")
 
 # Create new member object

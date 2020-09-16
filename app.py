@@ -72,6 +72,7 @@ def index():
             school_class=school_class,
             admin=False,
             archived=False,
+            discord=False,
         )
 
         # Add to database
@@ -88,7 +89,9 @@ def index():
 def admin_list():
     members = Member.query.filter_by(archived=False).all()
 
-    return render_template("admin/list.html", members=members, time=datetime.now())
+    return render_template(
+        "admin/list.html", members=members, amount=len(members), time=datetime.now()
+    )
 
 
 @app.route("/archived-list")
@@ -99,7 +102,11 @@ def archived_list():
     members = Member.query.filter_by(archived=True).all()
 
     return render_template(
-        "admin/list.html", members=members, time=datetime.now(), archived=True
+        "admin/list.html",
+        members=members,
+        amount=len(members),
+        time=datetime.now(),
+        archived=True,
     )
 
 
@@ -112,6 +119,22 @@ def archive(id):
 
     member.time_archived = None if member.archived else datetime.now()
     member.archived = False if member.archived else True
+
+    # Add to database
+    db.session.add(member)
+    db.session.commit()
+
+    return redirect("/list")
+
+
+@app.route("/discord/<id>")
+@logged_in
+@member
+@admin
+def discord(id):
+    member = Member.query.get(id)
+
+    member.discord = False if member.discord else True
 
     # Add to database
     db.session.add(member)

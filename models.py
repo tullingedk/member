@@ -23,6 +23,7 @@ class Member(db.Model):
     email: str = db.Column(db.String(255), unique=True, nullable=False)
     school_class: str = db.Column(db.String(255), unique=False, nullable=False)
     admin: bool = db.Column(db.Boolean(), unique=False, nullable=False)
+    discord: bool = db.Column(db.Boolean(), unique=False, nullable=False)
 
     archived: bool = db.Column(db.Boolean(), unique=False, nullable=False)
     time_archived: db.DateTime = db.Column(db.DateTime(timezone=False), nullable=True)

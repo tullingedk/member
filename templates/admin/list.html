@@ -2,21 +2,22 @@
 {% block title %} - Lista av {% if archived %}arkiverade{% endif %} medlemmar{% endblock %}
 {% block body %}
 <a href="/">
-  <button type="button" class="btn btn-primary">Tillbaka</button>
+  <button type="button" class="btn btn-primary no-print">Tillbaka</button>
 </a>
 
 {% if archived %}
 <a href="/list">
-  <button type="button" class="btn btn-primary">Visa aktiva medlemmar</button>
+  <button type="button" class="btn btn-primary no-print">Visa aktiva medlemmar</button>
 </a>
 {% else %}
 <a href="/archived-list">
-  <button type="button" class="btn btn-primary">Visa arkiverade medlemmar</button>
+  <button type="button" class="btn btn-primary no-print">Visa arkiverade medlemmar</button>
 </a>
 {% endif %}
-<button onclick="window.print();" type="button" class="btn btn-primary">Skriv ut</button>
+<button onclick="window.print();" type="button" class="btn btn-primary no-print">Skriv ut</button>
 
 <p>Utskriftsdatum: {{ time }}</p>
+<p>Antal medlemmar i denna lista: {{ amount }}</p>
 
 <table class="table">
   <thead>
@@ -26,11 +27,12 @@
       <th scope="col">Klass</th>
       <th scope="col">E-post</th>
       <th scope="col">Styrelse</th>
+      <th scope="col">Discord?</th>
       <th scope="col">Arkiverad</th>
       <th scope="col">Arkiveringsdatum</th>
       <th scope="col">Skapades</th>
       <th scope="col">Modifierades</th>
-      <th scope="col">Åtgärd</th>
+      <th class="no-print" scope="col">Åtgärd</th>
     </tr>
   </thead>
   <tbody>
@@ -41,13 +43,28 @@
       <td>{{ member.school_class }}</td>
       <td>{{ member.email }}</td>
       <td>Styrelse? {{ member.admin }}</td>
+      <td>
+        {% if member.discord %}
+        Ja
+        {% endif %}
+
+        <a href="/discord/{{ member.id }}">
+          <button type="button" class="btn btn-primary no-print">
+            {% if member.discord %}
+            Ta bort
+            {% else %}
+            Medlem har fått roll på Discord
+            {% endif %}
+          </button>
+        </a>
+      </td>
       <td>Arkiverad? {{ member.archived }}</td>
       <td>{{ member.time_archived }}</td>
       <td>{{ member.time_created }}</td>
       <td>{{ member.time_updated }}</td>
       <td>
         <a href="/archive/{{ member.id }}">
-          <button type="button" class="btn btn-primary">
+          <button type="button" class="btn btn-primary no-print">
             {% if archived %}
             Avarkivera
             {% else %}
