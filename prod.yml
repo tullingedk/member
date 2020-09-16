@@ -1,14 +1,15 @@
 version: '3'
 
 services:
-  mysql:
-    environment:
-      MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
-      MYSQL_ROOT_PASSWORD: '${MYSQL_PASSWORD}'
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+
   app:
     image: tullingedk/member:latest
     environment:
-      MYSQL_HOST: 'mysql'
+      MYSQL_HOST: '${MYSQL_HOST}'
       MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
       GOOGLE_CLIENT_ID: '${GOOGLE_CLIENT_ID}'
       GOOGLE_CLIENT_SECRET: '${GOOGLE_CLIENT_SECRET}'
@@ -19,3 +20,5 @@ services:
       - redis
     ports:
       - 5000:5000
+    expose:
+      - 5000

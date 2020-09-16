@@ -12,3 +12,15 @@ Member management portal for Tullinge gymnasium datorklubb.
 - `MYSQL_PASSWORD`
 - `MYSQL_HOST`
 - `MYSQL_DATABASE`
+
+## Deployment
+
+Fill in `.env` file or set required environment variables in other suitable way.
+
+Use `docker-compose` to run the application using `gunicorn` on port `5000`.
+
+```bash
+docker-compose -f prod.yml up -d
+```
+
+Use nginx or other proxy in front of gunicorn.
