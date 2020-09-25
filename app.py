@@ -149,6 +149,22 @@ def discord(id):
     return redirect("/list")
 
 
+@app.route("/admin/<id>")
+@logged_in
+@member
+@admin
+def make_admin(id):
+    member = Member.query.get(id)
+
+    member.admin = False if member.admin else True
+
+    # Add to database
+    db.session.add(member)
+    db.session.commit()
+
+    return redirect("/list")
+
+
 # register blueprints
 app.register_blueprint(auth_blueprint)
 

@@ -42,7 +42,20 @@
       <td>{{ member.name }}</td>
       <td>{{ member.school_class }}</td>
       <td>{{ member.email }}</td>
-      <td>Styrelse? {{ member.admin }}</td>
+      <td>
+        {% if member.admin %}
+        Ja
+        {% endif %}
+        <a href="/admin/{{ member.id }}">
+          <button type="button" class="btn btn-primary no-print">
+            {% if member.admin %}
+            Ta bort adminbehörighet
+            {% else %}
+            Ge adminbehörighet
+            {% endif %}
+          </button>
+        </a>
+      </td>
       <td>
         {% if member.discord %}
         Ja
