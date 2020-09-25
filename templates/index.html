@@ -2,7 +2,7 @@
 {% block body %}
 <h1>Välkommen!</h1>
 <p>Inloggad som {{ name }}, {{ email }}.</p>
-<img src="{{ picture_url }}" />
+<img width="200px" height="200px" src="{{ picture_url }}" />
 {% if member %}
 <p>Du är registrerad som medlem.</p>
 <a href="https://discord.gg/QSwCpfd">
@@ -13,6 +13,12 @@
 <a href="/list">
   <button type="button" class="btn btn-primary">Du som styrelsemedlem: visa och hantera medlemmar</button>
 </a>
+{% endif %}
+
+{% if member.archived %}
+<div class="alert alert-warning" role="alert">
+  Ditt medlemskap är markerat som arkiverat. Det arkiverades {{ member.time_archived }}.
+</div>
 {% endif %}
 
 <p>{{ member.name }} klass {{ member.school_class }}</p>
