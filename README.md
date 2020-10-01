@@ -7,7 +7,7 @@ Member management portal for Tullinge gymnasium datorklubb.
 - `GOOGLE_CLIENT_ID`
 - `GOOGLE_CLIENT_SECRET`
 - `GOOGLE_HOSTED_DOMAIN`
-- `OAUTHLIB_INSECURE_TRANSPORT`
+- `OAUTHLIB_INSECURE_TRANSPORT` - Set to `1` if running application behind proxy such as Nginx.
 - `MYSQL_USER`
 - `MYSQL_PASSWORD`
 - `MYSQL_HOST`
