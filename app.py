@@ -43,9 +43,9 @@ def classChart_data(members):
     )
     classChart["data"] = [0 for x in classChart["labels"]]
 
-    for member in members:
+    for user in members:
         for i in range(len(classChart["labels"])):
-            if member.school_class == classChart["labels"][i]:
+            if user.school_class == classChart["labels"][i]:
                 classChart["data"][i] = classChart["data"][i] + 1
 
     return classChart
