@@ -36,6 +36,21 @@ with app.app_context():
     db.create_all()
 
 
+def classChart_data(members):
+    classChart = {}
+    classChart["labels"] = list(
+        dict.fromkeys([member.school_class for member in members])
+    )
+    classChart["data"] = [0 for x in classChart["labels"]]
+
+    for member in members:
+        for i in range(len(classChart["labels"])):
+            if member.school_class == classChart["labels"][i]:
+                classChart["data"][i] = classChart["data"][i] + 1
+
+    return classChart
+
+
 @app.context_processor
 def inject_stage_and_region():
     return dict(commit_hash=commit_hash)
@@ -96,7 +111,11 @@ def admin_list():
     members = Member.query.filter_by(archived=False).all()
 
     return render_template(
-        "admin/list.html", members=members, amount=len(members), time=datetime.now()
+        "admin/list.html",
+        members=members,
+        amount=len(members),
+        time=datetime.now(),
+        classChart=classChart_data(members),
     )
 
 
@@ -113,6 +132,7 @@ def archived_list():
         amount=len(members),
         time=datetime.now(),
         archived=True,
+        classChart=classChart_data(members),
     )
 
 
