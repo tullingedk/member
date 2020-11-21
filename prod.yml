@@ -11,6 +11,7 @@ services:
       GOOGLE_HOSTED_DOMAIN: '${GOOGLE_HOSTED_DOMAIN}'
       SECRET_KEY: '${SECRET_KEY}'
       OAUTHLIB_INSECURE_TRANSPORT: '${OAUTHLIB_INSECURE_TRANSPORT}'
+      TZ: 'Europe/Stockholm'
     ports:
       - 5000:5000
     expose:
