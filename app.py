@@ -11,6 +11,7 @@
 from flask import Flask, session, render_template, redirect, request, abort
 from os import urandom, environ
 from datetime import datetime
+from string import ascii_letters, digits
 
 from blueprints.auth import auth_blueprint
 from decorators import logged_in, member, admin
@@ -51,6 +52,12 @@ def classChart_data(members):
     return classChart
 
 
+def valid_input(i):
+    if any(x not in list(ascii_letters) + list(digits) for x in i):
+        return False
+    return True
+
+
 @app.context_processor
 def inject_stage_and_region():
     return dict(commit_hash=commit_hash)
@@ -83,6 +90,9 @@ def index():
         if not stadgar:
             abort(400, "Stadgar must be accepted")
 
+        if not valid_input(school_class):
+            abort(400, "school_class contains illegal characters")
+
         if len(school_class) < 4 or len(school_class) > 5:
             abort(400, "Too long or too short school_class.")
 
@@ -103,7 +113,7 @@ def index():
         return redirect("/")
 
 
-@app.route("/list")
+@app.route("/admin")
 @logged_in
 @member
 @admin
@@ -111,7 +121,7 @@ def admin_list():
     members = Member.query.filter_by(archived=False).all()
 
     return render_template(
-        "admin/list.html",
+        "admin/index.html",
         members=members,
         amount=len(members),
         time=datetime.now(),
@@ -119,7 +129,7 @@ def admin_list():
     )
 
 
-@app.route("/archived-list")
+@app.route("/admin/archived")
 @logged_in
 @member
 @admin
@@ -127,7 +137,7 @@ def archived_list():
     members = Member.query.filter_by(archived=True).all()
 
     return render_template(
-        "admin/list.html",
+        "admin/index.html",
         members=members,
         amount=len(members),
         time=datetime.now(),
@@ -136,7 +146,7 @@ def archived_list():
     )
 
 
-@app.route("/archive/<id>")
+@app.route("/admin/archive/<id>")
 @logged_in
 @member
 @admin
@@ -150,10 +160,10 @@ def archive(id):
     db.session.add(member)
     db.session.commit()
 
-    return redirect("/list")
+    return redirect("/admin")
 
 
-@app.route("/discord/<id>")
+@app.route("/admin/discord/<id>")
 @logged_in
 @member
 @admin
@@ -166,10 +176,10 @@ def discord(id):
     db.session.add(member)
     db.session.commit()
 
-    return redirect("/list")
+    return redirect("/admin")
 
 
-@app.route("/admin/<id>")
+@app.route("/admin/makeadmin/<id>")
 @logged_in
 @member
 @admin
@@ -182,7 +192,7 @@ def make_admin(id):
     db.session.add(member)
     db.session.commit()
 
-    return redirect("/list")
+    return redirect("/admin")
 
 
 # register blueprints

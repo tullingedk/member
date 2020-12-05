@@ -1,5 +1,4 @@
-{% extends 'base.html' %}
-{% block body %}
+{% extends 'base.html' %} {% block body %}
 <h1>Välkommen!</h1>
 <p>Inloggad som {{ name }}, {{ email }}.</p>
 <img width="200px" height="200px" src="{{ picture_url }}" />
@@ -10,14 +9,15 @@
 </a>
 
 {% if member.admin %}
-<a href="/list">
-  <button type="button" class="btn btn-primary">Du som styrelsemedlem: visa och hantera medlemmar</button>
+<a href="/admin">
+  <button type="button" class="btn btn-primary">
+    Du som styrelsemedlem: visa och hantera medlemmar
+  </button>
 </a>
-{% endif %}
-
-{% if member.archived %}
+{% endif %} {% if member.archived %}
 <div class="alert alert-warning" role="alert">
-  Ditt medlemskap är markerat som arkiverat. Det arkiverades {{ member.time_archived }}.
+  Ditt medlemskap är markerat som arkiverat. Det arkiverades {{
+  member.time_archived }}.
 </div>
 {% endif %}
 
@@ -27,17 +27,37 @@
 
 {% else %}
 <p>Bli medlem!</p>
-<p>Använd detta formulär för att bli medlem i Datorklubben. Ett medlemskap kostar ingenting (den "medlemsavgift" du betalar är för att gå på LANen) men hjälper oss att söka bidrag och växa!</p>
-<p>Genom att fylla i formuläret godkänner du våra stadgar som finns <a href="https://tgdk.se/documents/2020/stadgar-2020-04-24.pdf">här</a>.</p>
+<p>
+  Använd detta formulär för att bli medlem i Datorklubben. Ett medlemskap kostar
+  ingenting (den "medlemsavgift" du betalar är för att gå på LANen) men hjälper
+  oss att söka bidrag och växa!
+</p>
+<p>
+  Genom att fylla i formuläret godkänner du våra stadgar som finns
+  <a href="https://tgdk.se/documents/2020/stadgar-2020-04-24.pdf">här</a>.
+</p>
 <p>När du fyllt i formuläret kommer länken till Discordservern att visas.</p>
 <form method="post">
   <div class="form-group">
     <label for="school_class">Ange klass</label>
-    <input name="school_class" type="text" class="form-control" id="school_class" placeholder="TE18">
+    <input
+      name="school_class"
+      type="text"
+      class="form-control"
+      id="school_class"
+      placeholder="TE18"
+    />
   </div>
   <div class="form-check">
-    <input name="stadgar" type="checkbox" class="form-check-input" id="stadgar">
-    <label class="form-check-label" for="stadgar">Jag godkänner föreningens stadgar.</label>
+    <input
+      name="stadgar"
+      type="checkbox"
+      class="form-check-input"
+      id="stadgar"
+    />
+    <label class="form-check-label" for="stadgar"
+      >Jag godkänner föreningens stadgar.</label
+    >
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
