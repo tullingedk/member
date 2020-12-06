@@ -89,42 +89,60 @@
     {% endfor %}
   </tbody>
 </table>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
 <script>
+  var dynamicColors = function(seed) {
+    Math.seedrandom(seed);
+    var r = Math.floor(Math.random() * 255);
+    var g = Math.floor(Math.random() * 255);
+    var b = Math.floor(Math.random() * 255);
+    return "rgb(" + r + "," + g + "," + b + ")";
+  };
+
+  const raw_data = [
+    {% for i in classChart['data'] %}
+    {{ i }},
+    {% endfor %}
+  ];
+
+  const raw_school_classes = [
+    {% for label in classChart['labels'] %}
+    '{{ label }}',
+    {% endfor %}
+  ];
+
+  const colors = raw_school_classes.map((school_class) => {
+    return dynamicColors(school_class);
+  })
+
   var ctx = document.getElementById('classChart').getContext('2d');
   var myDoughnutChart = new Chart(ctx, {
-
-  			type: 'doughnut',
-  			data: {
-  				datasets: [{
-  					data: [
-              {% for i in classChart['data'] %}
-                {{ i }},
-              {% endfor %}
-  					],
-  					label: 'Klassfördelning'
-  				}],
-  				labels: [
-            {% for label in classChart['labels'] %}
-              '{{ label }}',
-            {% endfor %}
-  				]
-  			},
-  			options: {
-          responsive: true,
-          maintainAspectRatio: false,
-  				legend: {
-  					position: 'top',
-  				},
-  				title: {
-  					display: true,
-  					text: 'Klassfördelning av medlemmar'
-  				},
-  				animation: {
-  					animateScale: true,
-  					animateRotate: true
-  				}
-  			}
+    type: 'doughnut',
+    data: {
+      datasets: [{
+        data: raw_data,
+        backgroundColor: colors,
+        label: 'Klassfördelning'
+      }],
+      labels: raw_school_classes
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Klassfördelning av medlemmar'
+      },
+      animation: {
+        animateScale: true,
+        animateRotate: true
+      }
+    }
   });
 </script>
 {% endblock %}
