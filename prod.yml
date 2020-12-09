@@ -1,17 +1,18 @@
-version: '3'
+version: "3"
 
 services:
   app:
     image: tullingedk/member:latest
+    restart: always
     environment:
-      MYSQL_HOST: '${MYSQL_HOST}'
-      MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
-      GOOGLE_CLIENT_ID: '${GOOGLE_CLIENT_ID}'
-      GOOGLE_CLIENT_SECRET: '${GOOGLE_CLIENT_SECRET}'
-      GOOGLE_HOSTED_DOMAIN: '${GOOGLE_HOSTED_DOMAIN}'
-      SECRET_KEY: '${SECRET_KEY}'
-      OAUTHLIB_INSECURE_TRANSPORT: '${OAUTHLIB_INSECURE_TRANSPORT}'
-      TZ: 'Europe/Stockholm'
+      MYSQL_HOST: "${MYSQL_HOST}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+      GOOGLE_CLIENT_ID: "${GOOGLE_CLIENT_ID}"
+      GOOGLE_CLIENT_SECRET: "${GOOGLE_CLIENT_SECRET}"
+      GOOGLE_HOSTED_DOMAIN: "${GOOGLE_HOSTED_DOMAIN}"
+      SECRET_KEY: "${SECRET_KEY}"
+      OAUTHLIB_INSECURE_TRANSPORT: "${OAUTHLIB_INSECURE_TRANSPORT}"
+      TZ: "Europe/Stockholm"
     ports:
       - 5000:5000
     expose:
