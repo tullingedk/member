@@ -13,6 +13,8 @@ services:
       SECRET_KEY: "${SECRET_KEY}"
       OAUTHLIB_INSECURE_TRANSPORT: "${OAUTHLIB_INSECURE_TRANSPORT}"
       TZ: "Europe/Stockholm"
+      PORT: "${PORT}"
+      SECRET_KEY: "${SECRET_KEY}""
     ports:
       - "${PORT}:${PORT}"
     expose:
