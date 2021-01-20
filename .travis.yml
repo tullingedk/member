@@ -1,26 +1,8 @@
 language: python
 python: 3.8
 
-
-jobs:
-    include:
-      - stage: test
-        install:
-          - pip install flake8 black --upgrade
-        script:
-          - black --check .
-          - flake8 .
-  
-      - stage: deploy
-        name: Build and deploy Docker image
-        script:
-          - sed -i "s/development/$TRAVIS_COMMIT/g" version.py
-          - docker build -t tullingedk/member:latest .
-        deploy:
-          provider: script
-          script: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin && docker push tullingedk/member:latest
-          edge: true
-          on:
-            branch: master
-        after_deploy:
-          - rm -rf /home/travis/.docker/config.json
+install:
+  - pip install flake8 black --upgrade
+script:
+  - black --check .
+  - flake8 .

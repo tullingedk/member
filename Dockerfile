@@ -8,9 +8,12 @@ RUN mkdir .venv
 # install dep
 RUN pip install --upgrade pip
 RUN pip install pipenv
-RUN apt-get update && apt-get install iproute2 tzdata -y
+RUN apt-get update && apt-get install iproute2 tzdata git -y
 
 COPY . /var/www/app
+
+# set commit version
+RUN sed -i "s/development/$(git rev-parse HEAD)/g" /var/www/app/version.py
 
 RUN pipenv install --deploy
 

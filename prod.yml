@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 
 services:
   app:
@@ -14,6 +14,6 @@ services:
       OAUTHLIB_INSECURE_TRANSPORT: "${OAUTHLIB_INSECURE_TRANSPORT}"
       TZ: "Europe/Stockholm"
     ports:
-      - 5000:5000
+      - "${PORT}:${PORT}"
     expose:
-      - 5000
+      - "${PORT}"

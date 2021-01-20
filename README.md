@@ -2,20 +2,9 @@
 
 Member management portal for Tullinge gymnasium datorklubb.
 
-## Environment Variables
+## Deployment Instructions
 
-- `GOOGLE_CLIENT_ID`
-- `GOOGLE_CLIENT_SECRET`
-- `GOOGLE_HOSTED_DOMAIN`
-- `OAUTHLIB_INSECURE_TRANSPORT` - Set to `1` if running application behind proxy such as Nginx.
-- `MYSQL_USER`
-- `MYSQL_PASSWORD`
-- `MYSQL_HOST`
-- `MYSQL_DATABASE`
-
-## Deployment
-
-Fill in `.env` file or set required environment variables in other suitable way.
+Copy the `.enx.example` to `.env` and modify the values where required.
 
 Use `docker-compose` to run the application using `gunicorn` on port `5000`.
 
@@ -24,3 +13,9 @@ docker-compose -f prod.yml up -d
 ```
 
 Use nginx or other proxy in front of gunicorn.
+
+## Contributors ✨
+
+Copyright (C) 2020 - 2021, Tullinge gymnasium datorklubb, <info@tgdk.se>
+
+Initially written by [Vilhelm Prytz](https://github.com/vilhelmprytz).
