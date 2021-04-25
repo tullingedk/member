@@ -22,6 +22,8 @@ from version import commit_hash
 app = Flask(__name__)
 app.secret_key = environ.get("SECRET_KEY", urandom(24))
 
+DISCORD_LINK = environ.get("DISCORD_LINK", "https://discord.gg")
+
 MYSQL_USER = environ.get("MYSQL_USER", "member")
 MYSQL_PASSWORD = environ.get("MYSQL_PASSWORD", "password")
 MYSQL_HOST = environ.get("MYSQL_HOST", "127.0.0.1")
@@ -79,6 +81,7 @@ def index():
             email=session["google_email"],
             picture_url=session["google_picture_url"],
             name=session["google_name"],
+            discord_link=DISCORD_LINK
         )
 
     if request.method == "POST":

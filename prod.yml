@@ -15,6 +15,7 @@ services:
       TZ: "Europe/Stockholm"
       PORT: "${PORT}"
       SECRET_KEY: "${SECRET_KEY}"
+      DISCORD_LINK: "${DISCORD_LINK}"
     ports:
       - "127.0.0.1:${PORT}:${PORT}"
     expose:
