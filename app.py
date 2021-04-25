@@ -81,7 +81,7 @@ def index():
             email=session["google_email"],
             picture_url=session["google_picture_url"],
             name=session["google_name"],
-            discord_link=DISCORD_LINK
+            discord_link=DISCORD_LINK,
         )
 
     if request.method == "POST":
